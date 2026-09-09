@@ -1,0 +1,39 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# Ignore Kotlin plugin data
+.kotlin
+
+# Ignore building files
+build/
+bin/
+out/
+target/
+dist/
+*.class
+*.jar
+*.war
+
+# Ignore gradle files
+.gradle/
+gradle-wrapper.jar
+!gradle-wrapper.jar
+
+# Ignore NetBeans files
+nbproject/
+nb-configuration.xml
+.nb-gradle/
+.nb-gradle-properties
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+*.log
+hs_err_pid*
+
+# Ignore temp files
+*.tmp
+*.swp
