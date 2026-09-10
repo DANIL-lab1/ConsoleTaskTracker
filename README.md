@@ -1,4 +1,4 @@
-# Java Task Tracker
+# Java Task Tracker (v. 0.1)
 
 A console-based task management application built in Java.
 
