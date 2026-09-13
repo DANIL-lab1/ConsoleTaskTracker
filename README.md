@@ -1,4 +1,4 @@
-# Java Task Tracker
+# Java Task Tracker (v0.2)
 
 A console-based task management application built in Java.
 
@@ -21,3 +21,16 @@ A console-based task management application built in Java.
 
 # Run the application
 ./gradlew clean run --console=plain
+
+
+## version 0.2 UPDATE!
+
+## Features
+- Task statistics with progress bars (`stats`)
+- Colored output (like Git)
+- Smart suggestions for typos (`Did you mean 'create'?`)
+
+## Technologies
+
+- ANSI colors for console output
+- Stream API for data processing
