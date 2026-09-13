@@ -23,7 +23,7 @@ A console-based task management application built in Java.
 ./gradlew clean run --console=plain
 ```
 
-## version 0.2 UPDATE!
+## Version 0.2 UPDATE!
 
 ## Features
 - Task statistics with progress bars (`stats`)
