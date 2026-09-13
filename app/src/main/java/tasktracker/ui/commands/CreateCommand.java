@@ -3,6 +3,7 @@ package tasktracker.ui.commands;
 import tasktracker.model.Person;
 import tasktracker.model.Status;
 import tasktracker.model.Task;
+import tasktracker.util.ColorUtils;
 import tasktracker.service.TaskService;
 import tasktracker.ui.ArgumentParser;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class CreateCommand implements ICommand {
         String statusStr = ArgumentParser.getValue(parsedArgs, "status");
         
         if (title == null || title.isEmpty()) {
-            System.out.println("  Error: Title is required. Use --title \"Task name\"");
+            System.out.println("ERROR: Title is required. Use --title \"Task name\"");
             System.out.println("Usage: " + getUsage());
             return;
         }
@@ -30,7 +31,7 @@ public class CreateCommand implements ICommand {
                 try {
                     status = Status.valueOf(statusStr.toUpperCase());
                 } catch (IllegalArgumentException e) {
-                    System.out.println("  Warning: Invalid status. Using NEW.");
+                    System.out.println("WARNING: Invalid status. Using NEW.");
                 }
             }
             
@@ -45,14 +46,14 @@ public class CreateCommand implements ICommand {
                 service.updateTaskStatus(task.getId(), status);
             }
             
-            System.out.println("  Task created successfully!");
-            System.out.println("   ID: " + task.getId());
-            System.out.println("   Title: " + task.getTitle());
-            System.out.println("   Status: " + task.getStatus());
-            System.out.println("   Assignee: " + (assignee != null ? assignee.getName() : "Unassigned"));
+            ColorUtils.printSuccess("Task created!");
+            System.out.println("   ID: " + ColorUtils.gray(task.getId().toString()));
+            System.out.println("   Title: " + ColorUtils.bold(task.getTitle()));
+            System.out.println("   Status: " + ColorUtils.colorStatus(task.getStatus().toString()));
+            System.out.println("   Assignee: " + (task.getAssignee() != null ? task.getAssignee().getName() : ColorUtils.dim("Unassigned")));
             
         } catch (Exception e) {
-            System.out.println("  Error creating task: " + e.getMessage());
+            System.out.println("ERROR: " + e.getMessage());
         }
     }
     
@@ -64,5 +65,10 @@ public class CreateCommand implements ICommand {
     @Override
     public String getUsage() {
         return "create --title \"Task name\" --desc \"Description\" --assignee \"Name\" --status NEW|IN_PROGRESS|DONE";
+    }
+    
+    @Override
+    public String getCategory() {
+        return "TASK MANAGEMENT";
     }
 }

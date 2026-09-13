@@ -5,13 +5,15 @@ import tasktracker.service.TaskService;
 import tasktracker.ui.TablePrinter;
 import java.util.List;
 
-public class ListCommand implements ICommand{
+public class ListCommand implements ICommand {
+    
     @Override
-    public void execute(String args[], TaskService service){
+    public void execute(String[] args, TaskService service) {
         List<Task> tasks = service.getAllTasks();
         
-        if (tasks.isEmpty()){
-            System.out.println("No tasks found");
+        if (tasks.isEmpty()) {
+            System.out.println("INFO: No tasks found.");
+            return;
         }
         
         System.out.println("All tasks (" + tasks.size() + "):");
@@ -26,5 +28,10 @@ public class ListCommand implements ICommand{
     @Override
     public String getUsage() {
         return "list";
+    }
+    
+    @Override
+    public String getCategory() {
+        return "TASK MANAGEMENT";
     }
 }

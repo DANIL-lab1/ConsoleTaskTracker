@@ -2,6 +2,7 @@ package tasktracker.ui;
 
 import tasktracker.model.Task;
 import tasktracker.model.Status;
+import tasktracker.util.ColorUtils;
 import java.util.List;
 
 public class TablePrinter {
@@ -9,7 +10,7 @@ public class TablePrinter {
     private static final int ID_WIDTH = 36;
     private static final int TITLE_WIDTH = 30;
     private static final int STATUS_WIDTH = 12;
-    private static final int ASSIGNEE_WIDTH = 12;
+    private static final int ASSIGNEE_WIDTH = 15;
     
     private static final String SEPARATOR = "+" + "-".repeat(ID_WIDTH + 2) +
                                             "+" + "-".repeat(TITLE_WIDTH + 2) +
@@ -21,34 +22,49 @@ public class TablePrinter {
     
     public static void printTasks(List<Task> tasks) {
         if (tasks == null || tasks.isEmpty()) {
-            System.out.println("  No tasks to display.");
+            ColorUtils.printInfo("No tasks to display.");
             return;
         }
         
-        System.out.println(SEPARATOR);
-        System.out.printf(HEADER_FORMAT, "ID", "Title", "Status", "Assignee");
-        System.out.println(SEPARATOR);
+        System.out.println(ColorUtils.gray(SEPARATOR));
+        System.out.printf(ColorUtils.bold(HEADER_FORMAT), "ID", "Title", "Status", "Assignee");
+        System.out.println(ColorUtils.gray(SEPARATOR));
         
         for (Task task : tasks) {
-            String id = task.getId().toString().substring(0, 8) + "...";
+            String id = task.getId().toString();
             String title = truncate(task.getTitle(), TITLE_WIDTH);
             String status = formatStatus(task.getStatus());
-            String assignee = task.getAssignee() != null ? task.getAssignee().getName() : "-";
+            String assignee = task.getAssignee() != null 
+                ? truncate(task.getAssignee().getName(), ASSIGNEE_WIDTH) 
+                : "-";
             
-            System.out.printf(ROW_FORMAT, id, title, status, assignee);
+            String idColored = ColorUtils.gray(String.format("%-" + ID_WIDTH + "s", id));
+            String titleColored = String.format("%-" + TITLE_WIDTH + "s", title);
+            String statusColored = padColored(status, STATUS_WIDTH);
+            String assigneeColored = String.format("%-" + ASSIGNEE_WIDTH + "s", assignee);
+            
+            System.out.println("| " + idColored + " | " + titleColored + " | " + statusColored + " | " + assigneeColored + " |");
         }
         
-        System.out.println(SEPARATOR);
+        System.out.println(ColorUtils.gray(SEPARATOR));
     }
+
     
     private static String formatStatus(Status status) {
         if (status == null) return "-";
         switch (status) {
-            case NEW: return "NEW";
-            case IN_PROGRESS: return "IN PROGRESS";
-            case DONE: return "DONE";
+            case NEW: return ColorUtils.BLUE + "NEW" + ColorUtils.RESET;
+            case IN_PROGRESS: return ColorUtils.YELLOW + "IN PROGRESS" + ColorUtils.RESET;
+            case DONE: return ColorUtils.GREEN + "DONE" + ColorUtils.RESET;
             default: return status.toString();
         }
+    }
+    
+    private static String padColored(String coloredText, int width) {
+        String plainText = coloredText.replaceAll("\u001B\\[[;\\d]*m", "");
+        int padding = width - plainText.length();
+        if (padding < 0) padding = 0;
+        return coloredText + " ".repeat(padding);
     }
     
     private static String truncate(String text, int maxLength) {

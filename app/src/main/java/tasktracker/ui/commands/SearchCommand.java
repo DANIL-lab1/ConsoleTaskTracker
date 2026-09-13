@@ -10,7 +10,7 @@ public class SearchCommand implements ICommand {
     @Override
     public void execute(String[] args, TaskService service) {
         if (args.length < 2) {
-            System.out.println("  Error: Search keyword required.");
+            System.out.println("ERROR: Search keyword required.");
             System.out.println("Usage: " + getUsage());
             return;
         }
@@ -26,18 +26,18 @@ public class SearchCommand implements ICommand {
             .trim();
         
         if (keyword.isEmpty()) {
-            System.out.println("  Error: Search keyword cannot be empty.");
+            System.out.println("ERROR: Search keyword cannot be empty.");
             return;
         }
         
         List<Task> tasks = service.searchTasks(keyword);
         
         if (tasks.isEmpty()) {
-            System.out.println("  No tasks found containing '" + keyword + "'");
+            System.out.println("SEARCH: No tasks found containing '" + keyword + "'");
             return;
         }
         
-        System.out.println("  Found " + tasks.size() + " task(s) containing '" + keyword + "':");
+        System.out.println("SEARCH: Found " + tasks.size() + " task(s) containing '" + keyword + "':");
         TablePrinter.printTasks(tasks);
     }
     
@@ -49,5 +49,10 @@ public class SearchCommand implements ICommand {
     @Override
     public String getUsage() {
         return "search \"keyword\"";
+    }
+    
+    @Override
+    public String getCategory() {
+        return "SEARCH & FILTER";
     }
 }

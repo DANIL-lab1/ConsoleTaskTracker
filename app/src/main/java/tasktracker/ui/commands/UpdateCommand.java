@@ -2,6 +2,7 @@ package tasktracker.ui.commands;
 
 import tasktracker.model.Status;
 import tasktracker.model.Task;
+import tasktracker.util.ColorUtils;
 import tasktracker.service.TaskService;
 import tasktracker.ui.ArgumentParser;
 import java.util.Map;
@@ -12,7 +13,7 @@ public class UpdateCommand implements ICommand {
     @Override
     public void execute(String[] args, TaskService service) {
         if (args.length < 2) {
-            System.out.println("  Error: Task ID required.");
+            System.out.println("ERROR: Task ID required.");
             System.out.println("Usage: " + getUsage());
             return;
         }
@@ -24,7 +25,7 @@ public class UpdateCommand implements ICommand {
             String statusStr = ArgumentParser.getValue(parsedArgs, "status");
             
             if (statusStr == null || statusStr.isEmpty()) {
-                System.out.println("  Error: Status required. Use --status NEW|IN_PROGRESS|DONE");
+                System.out.println("ERROR: Status required. Use --status NEW|IN_PROGRESS|DONE");
                 return;
             }
             
@@ -32,21 +33,21 @@ public class UpdateCommand implements ICommand {
             try {
                 newStatus = Status.valueOf(statusStr.toUpperCase());
             } catch (IllegalArgumentException e) {
-                System.out.println("  Error: Invalid status. Use: NEW, IN_PROGRESS, or DONE");
+                System.out.println("ERROR: Invalid status. Use: NEW, IN_PROGRESS, or DONE");
                 return;
             }
             
             Task task = service.updateTaskStatus(id, newStatus);
             
-            System.out.println("  Task status updated successfully!");
-            System.out.println("   ID: " + task.getId());
-            System.out.println("   Title: " + task.getTitle());
-            System.out.println("   New Status: " + task.getStatus());
+            ColorUtils.printSuccess("Task status updated!");
+            System.out.println("   ID: " + ColorUtils.gray(task.getId().toString()));
+            System.out.println("   Title: " + ColorUtils.bold(task.getTitle()));
+            System.out.println("   New Status: " + ColorUtils.colorStatus(task.getStatus().toString()));
             
         } catch (IllegalArgumentException e) {
-            System.out.println("  Error: " + e.getMessage());
+            System.out.println("ERROR: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("  Error: Invalid ID format.");
+            System.out.println("ERROR: Invalid ID format.");
         }
     }
     
@@ -58,5 +59,10 @@ public class UpdateCommand implements ICommand {
     @Override
     public String getUsage() {
         return "update <id> --status NEW|IN_PROGRESS|DONE";
+    }
+    
+    @Override
+    public String getCategory() {
+        return "TASK MANAGEMENT";
     }
 }

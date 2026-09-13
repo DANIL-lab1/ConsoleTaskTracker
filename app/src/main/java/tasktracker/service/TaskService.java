@@ -30,6 +30,39 @@ public class TaskService {
         return repository.findById(id);
     }
     
+    public Optional<Task> findTaskByIdOrPrefix(String idOrPrefix) {
+        if (idOrPrefix == null || idOrPrefix.trim().isEmpty()) {
+            return Optional.empty();
+        }
+
+        try {
+            UUID id = UUID.fromString(idOrPrefix);
+            return repository.findById(id);
+        } catch (IllegalArgumentException e) {
+            String prefix = idOrPrefix.toLowerCase().trim();
+
+            if (prefix.length() < 4) {
+                throw new IllegalArgumentException("ID prefix must be at least 4 characters");
+            }
+
+            List<Task> matches = repository.findAll().stream()
+                .filter(task -> task.getId().toString().toLowerCase().startsWith(prefix))
+                .toList();
+
+            if (matches.isEmpty()) {
+                return Optional.empty();
+            }
+
+            if (matches.size() > 1) {
+                throw new IllegalArgumentException(
+                    "Ambiguous ID prefix '" + prefix + "'. Found " + matches.size() + " tasks. Use more characters."
+                );
+            }
+
+            return Optional.of(matches.get(0));
+        }
+    }
+    
     public List<Task> getAllTasks() {
         return repository.findAll();
     }

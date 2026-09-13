@@ -6,4 +6,8 @@ public interface ICommand {
     void execute(String args[], TaskService service);
     String getDescription();
     String getUsage();
+    
+    default String getCategory() {
+        return "OTHER";
+    }
 }

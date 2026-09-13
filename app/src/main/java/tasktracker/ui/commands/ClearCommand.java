@@ -7,7 +7,7 @@ public class ClearCommand implements ICommand {
     @Override
     public void execute(String[] args, TaskService service) {
         service.deleteAllTasks();
-        System.out.println("  All tasks cleared!");
+        System.out.println("SUCCESS: All tasks cleared!");
     }
     
     @Override
@@ -18,5 +18,10 @@ public class ClearCommand implements ICommand {
     @Override
     public String getUsage() {
         return "clear";
+    }
+    
+    @Override
+    public String getCategory() {
+        return "UTILITY";
     }
 }

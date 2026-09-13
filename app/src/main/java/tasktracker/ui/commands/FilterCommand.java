@@ -16,7 +16,7 @@ public class FilterCommand implements ICommand {
         String statusStr = ArgumentParser.getValue(parsedArgs, "status");
         
         if (statusStr == null || statusStr.isEmpty()) {
-            System.out.println("  Error: Status required. Use --status NEW|IN_PROGRESS|DONE");
+            System.out.println("ERROR: Status required. Use --status NEW|IN_PROGRESS|DONE");
             System.out.println("Usage: " + getUsage());
             return;
         }
@@ -25,18 +25,18 @@ public class FilterCommand implements ICommand {
         try {
             status = Status.valueOf(statusStr.toUpperCase());
         } catch (IllegalArgumentException e) {
-            System.out.println("  Error: Invalid status. Use: NEW, IN_PROGRESS, or DONE");
+            System.out.println("ERROR: Invalid status. Use: NEW, IN_PROGRESS, or DONE");
             return;
         }
         
         List<Task> tasks = service.getTasksByStatus(status);
         
         if (tasks.isEmpty()) {
-            System.out.println("  No tasks with status: " + status);
+            System.out.println("INFO: No tasks with status: " + status);
             return;
         }
         
-        System.out.println("  Tasks with status '" + status + "' (" + tasks.size() + "):");
+        System.out.println("Tasks with status '" + status + "' (" + tasks.size() + "):");
         TablePrinter.printTasks(tasks);
     }
     
@@ -48,5 +48,10 @@ public class FilterCommand implements ICommand {
     @Override
     public String getUsage() {
         return "filter --status NEW|IN_PROGRESS|DONE";
+    }
+    
+    @Override
+    public String getCategory() {
+        return "SEARCH & FILTER";
     }
 }

@@ -2,13 +2,14 @@ package tasktracker.ui.commands;
 
 import tasktracker.service.TaskService;
 import java.util.UUID;
+import tasktracker.util.ColorUtils;
 
 public class DeleteCommand implements ICommand {
     
     @Override
     public void execute(String[] args, TaskService service) {
         if (args.length < 2) {
-            System.out.println("  Error: Task ID required.");
+            System.out.println("ERROR: Task ID required.");
             System.out.println("Usage: " + getUsage());
             return;
         }
@@ -16,12 +17,12 @@ public class DeleteCommand implements ICommand {
         try {
             UUID id = UUID.fromString(args[1]);
             service.deleteTask(id);
-            System.out.println("  Task deleted successfully!");
+            ColorUtils.printSuccess("Task deleted!");
             
         } catch (IllegalArgumentException e) {
-            System.out.println("  Error: " + e.getMessage());
+            System.out.println("ERROR: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("  Error: Invalid ID format.");
+            System.out.println("ERROR: Invalid ID format.");
         }
     }
     
@@ -33,5 +34,10 @@ public class DeleteCommand implements ICommand {
     @Override
     public String getUsage() {
         return "delete <id>";
+    }
+    
+    @Override
+    public String getCategory() {
+        return "TASK MANAGEMENT";
     }
 }

@@ -1,9 +1,13 @@
 package tasktracker.ui;
 
 import tasktracker.service.TaskService;
+import tasktracker.util.ColorUtils;
 import java.util.Scanner;
 
 public class ConsoleApp {
+    
+    private static final int WELCOME_WIDTH = 45;
+    private static final String WELCOME_LINE = "=".repeat(WELCOME_WIDTH);
     
     private final TaskService service;
     private final CommandDispatcher dispatcher;
@@ -21,7 +25,7 @@ public class ConsoleApp {
         printWelcome();
         
         while (running) {
-            System.out.print("task-cli> ");
+            System.out.print(ColorUtils.CYAN + "task-cli> " + ColorUtils.RESET);
             
             if (scanner.hasNextLine()) {
                 String input = scanner.nextLine().trim();
@@ -35,20 +39,23 @@ public class ConsoleApp {
                     dispatcher.execute(input, service);
                 }
             } else {
-                System.out.println(" No input available. Exiting...");
+                System.out.println(ColorUtils.warning("No input available. Exiting..."));
                 break;
             }
         }
         
-        System.out.println("  Goodbye!");
+        System.out.println(ColorUtils.info("Goodbye!"));
         scanner.close();
     }
     
     private void printWelcome() {
-        System.out.println("===========================================");
-        System.out.println("    JAVA TASK TRACKER");
-        System.out.println("===========================================");
-        System.out.println("Type 'help' for available commands.");
-        System.out.println("===========================================\n");
+        String title = "JAVA TASK TRACKER";
+        
+        System.out.println(ColorUtils.cyan(WELCOME_LINE));
+        System.out.println(ColorUtils.cyan(ColorUtils.center(ColorUtils.BOLD + title + ColorUtils.RESET, WELCOME_WIDTH)));
+        System.out.println(ColorUtils.cyan(WELCOME_LINE));
+        System.out.println(ColorUtils.center("Type " + ColorUtils.bold("'help'") + " for available commands.", WELCOME_WIDTH));
+        System.out.println(ColorUtils.cyan(WELCOME_LINE));
+        System.out.println();
     }
 }
