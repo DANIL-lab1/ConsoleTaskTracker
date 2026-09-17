@@ -32,11 +32,11 @@ A console-based task management application built in Java.
 
 ## Features
 
-# New fields for creating tasks:
+New fields for creating tasks:
 - Task priorities (`HIGH`, `MEDIUM`, `LOW`)
 - Deadlines (`--deadline YYYY-MM-DD`)
 
-# New commands to use:
+New commands to use:
 - Filter overdue tasks (`filter --overdue`)
 - Sorting (`list --sort date|title|status|priority|deadline|assignee`)
 - Undo last deleted task
