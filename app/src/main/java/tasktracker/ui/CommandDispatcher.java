@@ -13,6 +13,7 @@ public class CommandDispatcher {
         registerCommand("list", new ListCommand());
         registerCommand("update", new UpdateCommand());
         registerCommand("delete", new DeleteCommand());
+        registerCommand("undo", new UndoCommand());
         registerCommand("assign", new AssignCommand());
         registerCommand("search", new SearchCommand());
         registerCommand("filter", new FilterCommand());

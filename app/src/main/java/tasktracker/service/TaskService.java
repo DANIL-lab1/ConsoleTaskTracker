@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public class TaskService {
     private final ITaskRepository repository;
+    private Task lastDeletedTask;
     
     public TaskService(ITaskRepository repository) {
         this.repository = repository;
@@ -76,6 +77,13 @@ public class TaskService {
         return task;
     }
     
+    public Task updateTask(Task task) {
+        if (task == null) {
+            throw new IllegalArgumentException("Task cannot be null");
+        }
+        return repository.save(task);
+    }
+    
     public Task assignTask(UUID id, Person assignee) {
         Task task = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("The task is not found"));
@@ -89,10 +97,25 @@ public class TaskService {
     }
     
     public void deleteTask(UUID id) {
-        if (!repository.existsById(id)) {
-            throw new IllegalArgumentException("The task is not found");
-        }
+        Task task = repository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("The task is not found"));
+        
+        lastDeletedTask = task;
         repository.deleteById(id);
+    }
+    
+    public Task restoreLastDeleted(){
+        if (lastDeletedTask == null) {
+            throw new IllegalStateException("No recently deleted task to restore");
+        }
+
+        Task restored = lastDeletedTask;
+        lastDeletedTask = null;
+        return repository.save(restored); 
+    }
+    
+    public boolean hasRecentlyDeleted() {
+        return lastDeletedTask != null;
     }
     
     // ========== METHODS FOR FILTERS ==========
@@ -103,6 +126,12 @@ public class TaskService {
     
     public List<Task> getTasksByAssignee(Person assignee) {
         return repository.findByAssignee(assignee);
+    }
+    
+    public List<Task> getOverdueTasks() {
+        return repository.findAll().stream()
+            .filter(Task::isOverdue)
+            .toList();
     }
     
     public List<Task> searchTasks(String keyword) {

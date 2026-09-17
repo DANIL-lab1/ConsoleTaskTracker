@@ -4,6 +4,7 @@ import tasktracker.model.Task;
 import tasktracker.service.TaskService;
 import tasktracker.ui.TablePrinter;
 import java.util.List;
+import tasktracker.util.ColorUtils;
 
 public class SearchCommand implements ICommand {
     
@@ -32,12 +33,13 @@ public class SearchCommand implements ICommand {
         
         List<Task> tasks = service.searchTasks(keyword);
         
+        System.out.println("Search results for '" + keyword + "' (" + tasks.size() + "):");
+        
         if (tasks.isEmpty()) {
-            System.out.println("SEARCH: No tasks found containing '" + keyword + "'");
+            ColorUtils.printInfo("No tasks found.");
             return;
         }
         
-        System.out.println("SEARCH: Found " + tasks.size() + " task(s) containing '" + keyword + "':");
         TablePrinter.printTasks(tasks);
     }
     

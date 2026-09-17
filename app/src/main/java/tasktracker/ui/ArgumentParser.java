@@ -8,10 +8,10 @@ public class ArgumentParser {
         Map<String, String> result = new HashMap<>();
         String fullCommand = String.join(" ", args);
         
-        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(
+        java.util.regex.Pattern withValue = java.util.regex.Pattern.compile(
             "--(\\w+)\\s+(?:\"([^\"]*)\"|(\\S+))"
         );
-        java.util.regex.Matcher matcher = pattern.matcher(fullCommand);
+        java.util.regex.Matcher matcher = withValue.matcher(fullCommand);
         
         while (matcher.find()) {
             String key = matcher.group(1);
@@ -20,6 +20,16 @@ public class ArgumentParser {
                 value = matcher.group(3);
             }
             result.put(key, value);
+        }
+        
+        java.util.regex.Pattern flagOnly = java.util.regex.Pattern.compile(
+            "--(\\w+)(?=\\s|$)"
+        );
+        matcher = flagOnly.matcher(fullCommand);
+        
+        while (matcher.find()) {
+            String key = matcher.group(1);
+            result.putIfAbsent(key, "");
         }
         
         return result;
@@ -31,5 +41,9 @@ public class ArgumentParser {
 
     public static String getValue(Map<String, String> args, String key, String defaultValue) {
         return args.getOrDefault(key, defaultValue);
+    }
+
+    public static boolean hasFlag(Map<String, String> args, String key) {
+        return args.containsKey(key);
     }
 }
