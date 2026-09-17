@@ -1,4 +1,4 @@
-# Java Task Tracker (v0.2)
+# Java Task Tracker (v0.3)
 
 A console-based task management application built in Java.
 
@@ -8,11 +8,16 @@ A console-based task management application built in Java.
 - Filter tasks by status (NEW, IN_PROGRESS, DONE)
 - Search tasks by keyword
 - Data persistence via InMemoryRepository
+- Task statistics with progress bars (`stats`)
+- Colored output (like Git)
+- Smart suggestions for typos (`Did you mean 'create'?`)
 
 ## Technologies
 - Java 26
 - Gradle
 - InMemory data storage
+- ANSI colors for console output
+- Stream API for data processing
 
 ## How to run
 ```bash
@@ -23,14 +28,16 @@ A console-based task management application built in Java.
 ./gradlew clean run --console=plain
 ```
 
-## Version 0.2 UPDATE!
+## Version 0.3 UPDATE!
 
 ## Features
-- Task statistics with progress bars (`stats`)
-- Colored output (like Git)
-- Smart suggestions for typos (`Did you mean 'create'?`)
 
-## Technologies
+# New fields for creating tasks:
+- Task priorities (`HIGH`, `MEDIUM`, `LOW`)
+- Deadlines (`--deadline YYYY-MM-DD`)
 
-- ANSI colors for console output
-- Stream API for data processing
+# New commands to use:
+- Filter overdue tasks (`filter --overdue`)
+- Sorting (`list --sort date|title|status|priority|deadline|assignee`)
+- Undo last deleted task
+- Delete confirmation before removing
