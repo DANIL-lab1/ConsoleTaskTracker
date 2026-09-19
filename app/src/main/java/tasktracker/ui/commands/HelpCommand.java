@@ -52,6 +52,13 @@ public class HelpCommand implements ICommand {
                 String paddedName = String.format("%-14s", commandName);
                 System.out.println("    " + ColorUtils.helpCommand(paddedName) + 
                     " " + ColorUtils.helpDescription(command.getDescription()));
+                
+                if (commandName.equals("create")) {
+                    System.out.println("    " + " ".repeat(14) + " " + 
+                        ColorUtils.dim("Optional: --status, --priority, --deadline"));
+                    System.out.println("    " + " ".repeat(14) + " " + 
+                        ColorUtils.dim("(defaults: NEW, MEDIUM, none)"));
+                }
             }
             System.out.println();
         }
@@ -73,16 +80,21 @@ public class HelpCommand implements ICommand {
     private void printDetailedUsage(Map<String, List<String>> byCategory) {
         System.out.println("  " + ColorUtils.helpCategory("DETAILED USAGE"));
         System.out.println();
-        
+
         for (List<String> commands : byCategory.values()) {
             for (String commandName : commands) {
                 ICommand command = dispatcher.getCommand(commandName);
-                String paddedName = String.format("%-14s", commandName);
-                System.out.println("    " + ColorUtils.helpCommand(paddedName) + 
-                    " " + ColorUtils.helpUsage(command.getUsage()));
+                System.out.println("  " + ColorUtils.helpCommand(commandName));
+                String usage = command.getUsage();
+                if (commandName.equals("create")) {
+                    System.out.println("    " + ColorUtils.helpUsage("create --title \"Task name\" --desc \"Description\" --assignee \"Name\""));
+                    System.out.println("    " + ColorUtils.helpUsage("Optional: --status NEW|IN_PROGRESS|DONE --priority HIGH|MEDIUM|LOW --deadline YYYY-MM-DD"));
+                } else {
+                    System.out.println("    " + ColorUtils.helpUsage(usage));
+                }
+                System.out.println();
             }
         }
-        System.out.println();
     }
     
     private void printTips() {

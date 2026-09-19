@@ -14,6 +14,7 @@ public class CommandDispatcher {
         registerCommand("update", new UpdateCommand());
         registerCommand("delete", new DeleteCommand());
         registerCommand("undo", new UndoCommand());
+        registerCommand("desc", new DescCommand());
         registerCommand("assign", new AssignCommand());
         registerCommand("search", new SearchCommand());
         registerCommand("filter", new FilterCommand());

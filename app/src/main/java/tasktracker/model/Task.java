@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Task {
     private final UUID id;
     private String title;
@@ -14,6 +18,29 @@ public class Task {
     private LocalDateTime updatedAt;
     private Priority priority;
     private LocalDateTime deadline;
+    
+    @JsonCreator
+    public Task(
+        @JsonProperty("id") UUID id,
+        @JsonProperty("title") String title,
+        @JsonProperty("description") String description,
+        @JsonProperty("status") Status status,
+        @JsonProperty("priority") Priority priority,
+        @JsonProperty("assignee") Person assignee,
+        @JsonProperty("deadline") LocalDateTime deadline,
+        @JsonProperty("createdAt") LocalDateTime createdAt,
+        @JsonProperty("updatedAt") LocalDateTime updatedAt
+    ) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.priority = priority;
+        this.assignee = assignee;
+        this.deadline = deadline;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
     
     // Конструктор для новой задачи
     public Task (String title, String description, Person assignee){
@@ -26,21 +53,6 @@ public class Task {
         this.deadline = null;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-    }
-    
-    // Конструктор для загрузки из файла (с указанием всех полей)
-    public Task (UUID id, String title, String description, Status status,
-                Priority priority, Person assignee, LocalDateTime deadline,
-                LocalDateTime createdAt, LocalDateTime updatedAt){
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.priority = priority;
-        this.assignee = assignee;
-        this.deadline = deadline;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
     
     // Gets
@@ -85,6 +97,7 @@ public class Task {
         this.updatedAt = LocalDateTime.now();
     }
     
+    @JsonIgnore
     public boolean isOverdue() {
         return deadline != null && deadline.isBefore(LocalDateTime.now());
     }
