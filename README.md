@@ -49,7 +49,7 @@ A console-based task management application built in Java.
 - JUnit 5 (testing)
 - JaCoCo (code coverage)
 
-## Bugs
+## Fixing Bugs
 
 Now each command has a recognizable color - red for ERRORs, orange for WARN and yellow for INFO. You can try it!
 
