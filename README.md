@@ -52,3 +52,22 @@ A console-based task management application built in Java.
 ## Bugs
 
 Now each command has a recognizable color - red for ERRORs, orange for WARN and yellow for INFO. You can try it!
+
+## Testing
+
+```bash
+# Run all tests
+./gradlew test
+
+# Or run for more detailed test
+./gradlew test --rerun-tasks
+
+# Run tests with coverage report
+./gradlew test jacocoTestReport
+
+# View coverage report
+start app/build/reports/jacoco/test/html/index.html
+```
+
+# Test stats
+- Coverage: 24% total, 78% core (model, service, repository)
