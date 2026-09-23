@@ -37,3 +37,8 @@ hs_err_pid*
 # Ignore temp files
 *.tmp
 *.swp
+
+# Ingore logs files
+*.log
+app.log
+logs/
